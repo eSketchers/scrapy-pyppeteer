@@ -41,6 +41,10 @@ class ScrapyPyppeteerDownloaderMiddleware:
         if request.is_blank:
             url = request.url
         else:
+            headers = {}
+            for header_key in request.headers:
+                headers[header_key.decode('utf-8')] = request.headers[header_key].decode('utf-8')
+            await page.setExtraHTTPHeaders(headers)
             await page.goto(request.url)
             url = page.url
             # TODO set status and headers
